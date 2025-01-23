@@ -25,7 +25,7 @@ fi
 eval $(SHELL=bash opam config env --switch=$OPAM_SWITCH)
 # essential packages
 opam pin https://github.com/prosyslab/logger.git
-opam install -j $NCPU logger ocamlformat.0.24.1 merlin ocp-index ocp-indent ocaml-lsp-server ppx_compare ppx_deriving
+opam install -j $NCPU logger ocamlformat.0.26.0 merlin ocp-index ocp-indent ocaml-lsp-server ppx_compare ppx_deriving
 
 # install tree sitter
 git submodule update --init
