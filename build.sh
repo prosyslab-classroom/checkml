@@ -31,10 +31,9 @@ opam install -j $NCPU logger ocamlformat.0.26.0 merlin ocp-index ocp-indent ocam
 git submodule update --init
 pushd ocaml-tree-sitter-semgrep
 make update
-pushd core
-opam install -y .
-popd
+make setup
 make
+make install
 pushd lang
 ./test-lang ocaml
 pushd ocaml
