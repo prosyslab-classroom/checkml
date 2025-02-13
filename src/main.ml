@@ -2,8 +2,14 @@ module F = Format
 module TS = Tree_sitter_ocaml
 module Loc = Tree_sitter_run.Loc
 
+let read_file filename =
+  if not (Sys.file_exists filename) then (
+    prerr_endline ("checkml: file not found: " ^ filename);
+    exit 1)
+  else TS.Parse.file filename
+
 let parse filename =
-  let p = TS.Parse.file filename in
+  let p = read_file filename in
   match p.program with
   | None ->
       prerr_endline "checkml: parse error";
@@ -230,7 +236,12 @@ and check_structure res = function
 
 let main () =
   Arg.parse Cmdline.options (fun x -> Cmdline.file := x) "Usage";
-  let m = parse !Cmdline.file in
-  check m |> List.rev |> report
+  match !Cmdline.file with
+  | "" ->
+      prerr_endline "checkml: no input file";
+      exit 1
+  | _ ->
+      let m = parse !Cmdline.file in
+      check m |> List.rev |> report
 
 let _ = main ()
