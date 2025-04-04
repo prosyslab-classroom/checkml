@@ -1,9 +1,9 @@
 (executable
- (name main)
- (libraries
-  tree-sitter.bindings
-  tree-sitter-lang.ocaml
-  ppx_compare
-  ppx_deriving)
- (preprocess
-  (pps ppx_compare ppx_deriving.show ppx_deriving.eq)))
+ (name checkml)
+ (modules checkml)
+ (libraries compiler-libs.common))
+
+(install
+ (section bin)
+ (files
+  (checkml.exe as checkml)))

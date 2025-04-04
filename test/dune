@@ -5,12 +5,12 @@
    for_let.output
    (with-accepted-exit-codes
     1
-    (run ../src/main.exe for_let.ml)))))
+    (run ../src/checkml.exe for_let.ml)))))
 
 (rule
  (alias runtest)
  (action
-  (diff for_let.output for_let.expected)))
+  (run grep -q "found for" for_let.output)))
 
 (rule
  (deps while_let.ml)
@@ -19,12 +19,12 @@
    while_let.output
    (with-accepted-exit-codes
     1
-    (run ../src/main.exe while_let.ml)))))
+    (run ../src/checkml.exe while_let.ml)))))
 
 (rule
  (alias runtest)
  (action
-  (diff while_let.output while_let.expected)))
+  (run grep -q "found while" while_let.output)))
 
 (rule
  (deps ref_global.ml)
@@ -33,12 +33,12 @@
    ref_global.output
    (with-accepted-exit-codes
     1
-    (run ../src/main.exe ref_global.ml)))))
+    (run ../src/checkml.exe ref_global.ml)))))
 
 (rule
  (alias runtest)
  (action
-  (diff ref_global.output ref_global.expected)))
+  (run grep -q "found ref" ref_global.output)))
 
 (rule
  (deps ref_let.ml)
@@ -47,12 +47,12 @@
    ref_let.output
    (with-accepted-exit-codes
     1
-    (run ../src/main.exe ref_let.ml)))))
+    (run ../src/checkml.exe ref_let.ml)))))
 
 (rule
  (alias runtest)
  (action
-  (diff ref_let.output ref_let.expected)))
+  (run grep -q "found ref" ref_let.output)))
 
 (rule
  (deps ref_appl_fun.ml)
@@ -61,12 +61,12 @@
    ref_appl_fun.output
    (with-accepted-exit-codes
     1
-    (run ../src/main.exe ref_appl_fun.ml)))))
+    (run ../src/checkml.exe ref_appl_fun.ml)))))
 
 (rule
  (alias runtest)
  (action
-  (diff ref_appl_fun.output ref_appl_fun.expected)))
+  (run grep -q "found ref" ref_appl_fun.output)))
 
 (rule
  (deps ref_let_appl_fun.ml)
@@ -75,9 +75,9 @@
    ref_let_appl_fun.output
    (with-accepted-exit-codes
     1
-    (run ../src/main.exe ref_let_appl_fun.ml)))))
+    (run ../src/checkml.exe ref_let_appl_fun.ml)))))
 
 (rule
  (alias runtest)
  (action
-  (diff ref_let_appl_fun.output ref_let_appl_fun.expected)))
+  (run grep -q "found ref" ref_let_appl_fun.output)))

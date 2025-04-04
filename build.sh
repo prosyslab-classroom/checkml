@@ -22,25 +22,8 @@ else
   opam switch $OPAM_SWITCH
 fi
 
-eval $(SHELL=bash opam config env --switch=$OPAM_SWITCH)
-# essential packages
-opam pin https://github.com/prosyslab/logger.git
-opam install -j $NCPU logger ocamlformat.0.26.0 merlin ocp-index ocp-indent ocaml-lsp-server ppx_compare ppx_deriving
-
-# install tree sitter
-git submodule update --init
-pushd ocaml-tree-sitter-semgrep
-make update
-make setup
-make
-make install
-pushd lang
-./test-lang ocaml
-pushd ocaml
-make && make install
-popd
-popd
-popd
+eval $(SHELL=bash opam config env --switch=$OPAM_SWITCH --set-switch)
+opam install -j $NCPU dune
 
 # build
 make

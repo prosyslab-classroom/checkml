@@ -5,8 +5,8 @@ RM=@rm
 EXE=checkml
 
 all:
-	$(DUNE) build src/main.exe
-	$(LN) _build/default/src/main.exe $(EXE)
+	$(DUNE) build
+	$(LN) _build/default/src/checkml.exe $(EXE)
 
 test: all
 	$(DUNE) test

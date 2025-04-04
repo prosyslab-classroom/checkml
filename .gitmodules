@@ -1,3 +1,0 @@
-[submodule "ocaml-tree-sitter-semgrep"]
-	path = ocaml-tree-sitter-semgrep
-	url = https://github.com/semgrep/ocaml-tree-sitter-semgrep.git
