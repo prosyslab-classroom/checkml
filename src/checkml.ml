@@ -16,7 +16,7 @@ module ExprSet = struct
   let pp_print_list pp_v = Format.pp_print_list ~pp_sep pp_v
 
   let pp_expr fmt (a, loc) =
-    Format.fprintf fmt "%a: %s" Location.print_loc loc
+    Format.fprintf fmt "%a: found %s" Location.print_loc loc
       (match a with Ref -> "ref" | While -> "while" | For -> "for")
 
   let pp fmt s = Format.fprintf fmt "%a\n" (pp_print_list pp_expr) (elements s)
