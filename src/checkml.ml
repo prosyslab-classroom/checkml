@@ -5,11 +5,22 @@ open Longident
 
 type target = Ref | While | For
 
-module ExprSet = Set.Make (struct
-  type t = target * Location.t
+module ExprSet = struct
+  include Set.Make (struct
+    type t = target * Location.t
 
-  let compare = compare
-end)
+    let compare = compare
+  end)
+
+  let pp_sep fmt () = Format.fprintf fmt "\n"
+  let pp_print_list pp_v = Format.pp_print_list ~pp_sep pp_v
+
+  let pp_expr fmt (a, loc) =
+    Format.fprintf fmt "%a: %s" Location.print_loc loc
+      (match a with Ref -> "ref" | While -> "while" | For -> "for")
+
+  let pp fmt s = Format.fprintf fmt "%a\n" (pp_print_list pp_expr) (elements s)
+end
 
 let parse_ocaml_file filename =
   let ic = open_in filename in
@@ -42,16 +53,15 @@ let detect_ref_and_while ast =
   !found
 
 let () =
-  let filename = Sys.argv.(1) in
-  let ast = parse_ocaml_file filename in
-  let found = detect_ref_and_while ast in
-
-  if ExprSet.is_empty found then exit 0
+  let files = Array.to_list Sys.argv |> List.tl in
+  let alarms =
+    List.fold_left
+      (fun acc filename ->
+        filename |> parse_ocaml_file |> detect_ref_and_while
+        |> ExprSet.union acc)
+      ExprSet.empty files
+  in
+  if ExprSet.is_empty alarms then exit 0
   else (
-    found
-    |> ExprSet.iter (function
-         | Ref, loc -> Format.printf "%a: found ref\n" Location.print_loc loc
-         | While, loc ->
-             Format.printf "%a: found while\n" Location.print_loc loc
-         | For, loc -> Format.printf "%a: found for\n" Location.print_loc loc);
+    Format.printf "%a" ExprSet.pp alarms;
     exit 1)
