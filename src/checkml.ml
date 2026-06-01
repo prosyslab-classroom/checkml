@@ -52,8 +52,7 @@ let detect_ref_and_while ast =
   iter.structure iter ast;
   !found
 
-let () =
-  let files = Array.to_list Sys.argv |> List.tl in
+let run_hard files =
   let alarms =
     List.fold_left
       (fun acc filename ->
@@ -65,3 +64,20 @@ let () =
   else (
     Format.printf "%a" ExprSet.pp alarms;
     exit 1)
+
+let run_soft files =
+  let beauty =
+    try Sys.getenv "OCAML_BEAUTY"
+    with Not_found -> "ocaml-beauty"
+  in
+  let cmd = beauty ^ " " ^ String.concat " " (List.map Filename.quote files) in
+  exit (Sys.command cmd)
+
+let () =
+  match Array.to_list Sys.argv |> List.tl with
+  | "-hard" :: files -> run_hard files
+  | "-soft" :: files -> run_soft files
+  | [] ->
+    Printf.eprintf "Usage: checkml [-hard|-soft] <file.ml> [file.ml ...]\n";
+    exit 1
+  | files -> run_hard files
