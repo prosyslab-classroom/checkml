@@ -20,8 +20,5 @@ let squareAll lst =
 
 let classify x =
   if x > 100 then
-    if x > 1000 then
-      if x > 10000 then "huge"
-      else "large"
-    else "medium"
+    if x > 1000 then if x > 10000 then "huge" else "large" else "medium"
   else "small"

@@ -6,7 +6,9 @@ let parse_file filename =
   Location.init lexbuf filename;
   let ast =
     try Parse.implementation lexbuf
-    with exn -> close_in ic; raise exn
+    with exn ->
+      close_in ic;
+      raise exn
   in
   close_in ic;
   ast

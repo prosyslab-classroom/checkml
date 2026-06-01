@@ -1,6 +1,15 @@
 (executable
  (name checkml)
- (modules checkml metric ast_walker functional_purity pattern_quality naming_clarity structural_depth scorer reporter)
+ (modules
+  checkml
+  metric
+  ast_walker
+  functional_purity
+  pattern_quality
+  naming_clarity
+  structural_depth
+  scorer
+  reporter)
  (libraries compiler-libs.common str))
 
 (install
