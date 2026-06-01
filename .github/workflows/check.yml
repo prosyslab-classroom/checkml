@@ -13,7 +13,7 @@ jobs:
     - name: Set up OCaml
       uses: ocaml/setup-ocaml@v2
       with:
-        ocaml-compiler: 5.1.0
+        ocaml-compiler: 5.2.0
 
     - name: Use cached dependencies
       id: cache-opam
@@ -27,7 +27,7 @@ jobs:
     - name: Check Build
       run: |
         eval $(opam env)
-        opam install dune ocamlformat --yes
+        opam install dune ocamlformat=0.27.0 --yes
         dune fmt
         dune build
         dune test
