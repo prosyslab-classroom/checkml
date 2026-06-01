@@ -52,8 +52,14 @@ let detect_ref_and_while ast =
   iter.structure iter ast;
   !found
 
-let () =
-  let files = Array.to_list Sys.argv |> List.tl in
+let metrics : (module Metric.METRIC) list = [
+  (module Functional_purity);
+  (module Pattern_quality);
+  (module Naming_clarity);
+  (module Structural_depth);
+]
+
+let run_hard files =
   let alarms =
     List.fold_left
       (fun acc filename ->
@@ -65,3 +71,20 @@ let () =
   else (
     Format.printf "%a" ExprSet.pp alarms;
     exit 1)
+
+let run_soft files =
+  List.iter (fun filename ->
+    let ast = Ast_walker.parse_file filename in
+    let results = Scorer.run metrics ast in
+    let score = Scorer.total results in
+    Reporter.report filename results score
+  ) files
+
+let () =
+  match Array.to_list Sys.argv |> List.tl with
+  | "-hard" :: files -> run_hard files
+  | "-soft" :: files -> run_soft files
+  | [] ->
+    Printf.eprintf "Usage: checkml [-hard|-soft] <file.ml> [file.ml ...]\n";
+    exit 1
+  | files -> run_hard files

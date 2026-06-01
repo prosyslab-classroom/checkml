@@ -1,7 +1,7 @@
 (executable
  (name checkml)
- (modules checkml)
- (libraries compiler-libs.common))
+ (modules checkml metric ast_walker functional_purity pattern_quality naming_clarity structural_depth scorer reporter)
+ (libraries compiler-libs.common str))
 
 (install
  (section bin)
